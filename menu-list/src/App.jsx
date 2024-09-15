@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import items from "./data";
+import { Categories } from "./components/Categories";
+import { Menu } from "./components/Menu"; 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const categories = ["all", ...new Set(items.map((item) => item.category))];
+  const [menus, setMenus] = useState(items);
+
+  const filterMenu = (category) => {
+    if (category === "all") {
+      setMenus(items);
+      return;
+    }
+    const newItems = items.filter((item) => item.category === category);
+
+    setMenus(newItems);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main>
+      <section className='navbar'>
+        <div className='title'>
+          <h1>Our Menu</h1>
+          <div className='underline'></div>
+          </div>
+          <Categories menuList={categories} filterItems={filterMenu}/>
+          <Menu menus={menus}/>
+      </section>
+    </main>
+  );
 }
 
-export default App
+export default App;
